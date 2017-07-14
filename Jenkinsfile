@@ -29,7 +29,7 @@ pipeline {
                 sh """
                     [ -d venv ] && rm -rf venv
                     virtualenv --python=python2.7 venv
-                    source venv/bin/activate
+                    . venv/bin/activate
                     pip install --upgrade pip
                     pip install -r requirements.txt -r dev-requirements.txt
                     make clean
@@ -40,7 +40,7 @@ pipeline {
         stage ('Check_style') {
             steps {
                 sh """
-                    source venv/bin/activate
+                    . venv/bin/activate
                     [ -d report ] || mkdir report
                     make check || true
                     make flake8 | tee report/flake8.log || true
@@ -64,7 +64,7 @@ pipeline {
         stage ('Unit Tests') {
             steps {
                 sh """
-                    source venv/bin/activate
+                    . venv/bin/activate
                     make unittest || true
                 """
             }
@@ -84,7 +84,7 @@ pipeline {
         stage ('System Tests') {
             steps {
                 sh """
-                    source venv/bin/activate
+                    . venv/bin/activate
                     // Write file containing test node connection information if needed.
                     // writeFile file: "test/fixtures/nodes.yaml", text: "---\n- node: <some-ip>\n"
                     make systest || true
@@ -106,7 +106,7 @@ pipeline {
         stage ('Docs') {
             steps {
                 sh """
-                    source venv/bin/activate
+                    . venv/bin/activate
                     PYTHONPATH=. pdoc --html --html-dir docs --overwrite env.projectName
                 """
             }
