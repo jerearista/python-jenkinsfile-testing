@@ -12,7 +12,7 @@ pipeline {
     }
     environment {
         projectName = 'ProjectTemplate'
-        emailTo = 'eosplus-dev@arista.com'
+        emailTo = 'jere@arista.com'
         emailFrom = 'eosplus-dev+jenkins@arista.com'
     }
 
@@ -27,7 +27,7 @@ pipeline {
         stage ('Install_Requirements') {
             steps {
                 sh """
-                    [[ -d venv ]] && rm -rf venv
+                    [ -d venv ] && rm -rf venv
                     virtualenv --python=python2.7 venv
                     source venv/bin/activate
                     pip install --upgrade pip
@@ -41,7 +41,7 @@ pipeline {
             steps {
                 sh """
                     source venv/bin/activate
-                    [[ -d report ]] || mkdir report
+                    [ -d report ] || mkdir report
                     make check || true
                     make flake8 | tee report/flake8.log || true
                     make pylint | tee report/pylint.log || true
