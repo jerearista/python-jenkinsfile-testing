@@ -1,0 +1,11 @@
+[nosetests]
+all-modules
+traverse-namespace
+with-xunit
+xunit-file=report/nosetests.xml
+with-coverage
+cover-inclusive
+cover-html
+cover-html-dir=report/coverage
+cover-xml
+cover-xml-file=report/coverage.xml

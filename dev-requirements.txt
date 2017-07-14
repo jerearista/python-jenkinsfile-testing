@@ -1,0 +1,8 @@
+check-manifest
+coverage
+nose
+pdoc
+pytest
+setuptools>=35
+testtools
+unittest2
