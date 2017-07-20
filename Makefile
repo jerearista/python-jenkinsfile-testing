@@ -20,7 +20,7 @@
 ########################################################
 # variable section
 
-NAME = "XXX_PKG_NAME"
+NAME = "python_jenkinsfile_testing"
 
 PYTHON=python
 COVERAGE=coverage
@@ -42,10 +42,10 @@ all: clean check flake8 pylint tests
 
 flake8:
 	flake8 --ignore=$(FLAKE8_IGNORE) $(NAME)/
-	flake8 --ignore=$(FLAKE8_IGNORE),E402 test/
+	flake8 --ignore=$(FLAKE8_IGNORE),E402 tests/
 
 pylint:
-	find ./$(NAME) ./test -name \*.py | xargs pylint --rcfile .pylintrc
+	find ./$(NAME) ./tests -name \*.py | xargs pylint --rcfile .pylintrc
 
 check:
 	check-manifest
