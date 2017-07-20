@@ -14,23 +14,26 @@ pipeline {
         projectName = 'ProjectTemplate'
         emailTo = 'jere@arista.com'
         emailFrom = 'eosplus-dev+jenkins@arista.com'
+        VIRTUAL_ENV = "${env.WORKKSPACE}/venv"
     }
 
     stages {
 
-        stage ('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+        #stage ('Checkout') {
+        #    steps {
+        #        checkout scm
+        #    }
+        #}
 
         stage ('Install_Requirements') {
             steps {
                 sh """
                     echo ${SHELL}
                     [ -d venv ] && rm -rf venv
-                    virtualenv --python=python2.7 venv
-                    . venv/bin/activate
+                    #virtualenv --python=python2.7 venv
+                    virtualenv venv
+                    #. venv/bin/activate
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     pip install --upgrade pip
                     pip install -r requirements.txt -r dev-requirements.txt
                     make clean
@@ -41,10 +44,17 @@ pipeline {
         stage ('Check_style') {
             steps {
                 sh """
-                    . venv/bin/activate
+                    #. venv/bin/activate
                     [ -d report ] || mkdir report
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     make check || true
+                """
+                sh """
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     make flake8 | tee report/flake8.log || true
+                """
+                sh """
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     make pylint | tee report/pylint.log || true
                 """
                 step([$class: 'WarningsPublisher',
@@ -65,7 +75,8 @@ pipeline {
         stage ('Unit Tests') {
             steps {
                 sh """
-                    . venv/bin/activate
+                    #. venv/bin/activate
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     make unittest || true
                 """
             }
@@ -85,7 +96,8 @@ pipeline {
         stage ('System Tests') {
             steps {
                 sh """
-                    . venv/bin/activate
+                    #. venv/bin/activate
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     // Write file containing test node connection information if needed.
                     // writeFile file: "test/fixtures/nodes.yaml", text: "---\n- node: <some-ip>\n"
                     make systest || true
@@ -107,7 +119,8 @@ pipeline {
         stage ('Docs') {
             steps {
                 sh """
-                    . venv/bin/activate
+                    #. venv/bin/activate
+                    export PATH=${VIRTUAL_ENV}/bin:${PATH}
                     PYTHONPATH=. pdoc --html --html-dir docs --overwrite env.projectName
                 """
             }
