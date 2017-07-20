@@ -1,7 +1,9 @@
 check-manifest
 coverage
+flake8
 nose
 pdoc
+pylint
 pytest
 setuptools>=35
 testtools
