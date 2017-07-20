@@ -48,7 +48,8 @@ pylint:
 	find ./$(NAME) ./tests -name \*.py | xargs pylint --rcfile .pylintrc
 
 check:
-	check-manifest
+	@echo "Check-manifest disabled pending https://github.com/mgedmin/check-manifest/issues/68"
+	#check-manifest
 
 clean:
 	@echo "Cleaning up distutils stuff"
